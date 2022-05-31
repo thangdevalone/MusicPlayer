@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Player</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+    <div class="main">
+        <div class="music--app">
+            <div class="header">
+                <span>Now playing: </span>
+                <h2>Anh đánh rơi người yêu này</h2>
+            </div>
+            <div class="cd">
+                <div class="cd--thumb">
+                    
+                </div>
+            </div>
+            <div class="controls">
+                <div class="control return">
+                    <i class="fa-solid fa-arrow-rotate-left"></i>
+                </div>
+                <div class="control prev">
+                    <i class="fa-solid fa-backward-step"></i>
+                </div>
+                <div class="control play--ui">
+                    <i class="play--ico fa-solid fa-play"></i>
+                    <i class="play--ico fa-solid fa-pause"></i>
+                </div>
+                <div class="control next">
+                    <i class="fa-solid fa-forward-step"></i>
+                </div>
+                <div class="control random">
+                    <i class="fa-solid fa-shuffle"></i>
+                </div>
+            </div>
+            <audio id="audio" src=""></audio>
+            <div class="process--bar">
+                <input type="range" name="ProcessMusic" id="process" class="process" value=0  min="0" max="100" >
+            </div>
+            <div class="playlist">
+             
+            </div>
+        </div>
+    </div>
+    <script src="./script.js"></script>
+</body>
+</html>
