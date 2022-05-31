@@ -72,6 +72,12 @@ const app={
             author: "Cucak",
             path: "./assets/music/YeuRoiSeBiet-CuCak.mp3",
             image: "./assets/img/YeuRoiSeBiet.jpg"
+        },
+        {
+            name: "Sau tất cả",
+            author: "Erik",
+            path: "./assets/music/SauTatCa-Erik.mp3",
+            image: "./assets/img/SauTatCa.jpg"
         }
     ],
     handleEvent: function(){
