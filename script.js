@@ -1,16 +1,20 @@
-const playList=document.querySelector(".playlist");
-const playBtn=document.querySelector(".play--ui");
-const playIco=document.querySelector(".play--ico")
-const cd=document.querySelector(".cd--thumb");
-const heading=document.querySelector(".header h2");
-const audio=document.querySelector("#audio");
-const nextBtn=document.querySelector(".next");
-const prevBtn=document.querySelector(".prev");
-const processBar=document.querySelector(".process")
-const musicApp=document.querySelector(".music--app")
-const returnBtn=document.querySelector(".return")
-const app={
-    currentIndex:0,
+const playList = document.querySelector(".playlist");
+const playBtn = document.querySelector(".play--ui");
+const playIco = document.querySelector(".play--ico")
+const cd = document.querySelector(".cd--thumb");
+const heading = document.querySelector(".header h2");
+const audio = document.querySelector("#audio");
+const nextBtn = document.querySelector(".next");
+const prevBtn = document.querySelector(".prev");
+const processBar = document.querySelector(".process")
+const musicApp = document.querySelector(".music--app")
+const returnBtn = document.querySelector(".return")
+const randomBtn = document.querySelector(".random")
+
+const app = {
+    currentIndex: 0,
+    isReturn: false,
+    isRandom: false,
     isPlaying: false,
     songs: [
         {
@@ -80,21 +84,22 @@ const app={
             image: "./assets/img/SauTatCa.jpg"
         }
     ],
-    handleEvent: function(){
+    handleEvent: function () {
+
         const _this = this;
         const cdThumbAnimate = cd.animate([{ transform: "rotate(360deg)" }], {
             duration: 10000, // 10 seconds
             iterations: Infinity
-          });
+        });
         cdThumbAnimate.pause();
         playBtn.onclick = function () {
             if (_this.isPlaying) {
-              audio.pause();
+                audio.pause();
             } else {
-              audio.play();
+                audio.play();
             }
         };
-        
+
         // Khi song được play
         // When the song is played
         audio.onplay = function () {
@@ -102,69 +107,120 @@ const app={
             musicApp.classList.add("playing");
             cdThumbAnimate.play();
         };
-  
+
         // Khi song bị pause
         // When the song is pause
         audio.onpause = function () {
-          _this.isPlaying = false;
-          musicApp.classList.remove("playing");
-          cdThumbAnimate.pause();
+            _this.isPlaying = false;
+            musicApp.classList.remove("playing");
+            cdThumbAnimate.pause();
         };
-      
-        nextBtn.onclick= function(){
-            _this.nextSong()
+
+        nextBtn.onclick = function () {
+            if (_this.isRandom) {
+                _this.randomMusic();
+            } else _this.nextSong()
             _this.render()
             audio.play();
         }
-        prevBtn.onclick= function(){
-            _this.prevSong()
+        prevBtn.onclick = function () {
+            if (_this.isRandom) {
+                _this.randomMusic();
+            } else _this.prevSong()
             _this.render()
             audio.play();
 
         }
-        audio.ontimeupdate= function(){
-            if(audio.duration){
-                var processPercent = Math.floor((audio.currentTime/audio.duration)*100)
+        audio.ontimeupdate = function () {
+            if (audio.duration) {
+                var processPercent = Math.floor((audio.currentTime / audio.duration) * 100)
                 processBar.value = processPercent
             }
         }
         // returnBtn.onclick= function(){
         //     this.classlist.toggle("btnActive")
         // }
-        audio.onended= function(){
-            nextBtn.click();
-            playBtn.click();
+        audio.onended = function () {
+            if (_this.isReturn) {
+                audio.play();
+            } else {
+                if (_this.isRandom) {
+                    _this.randomMusic();
+                } else _this.nextSong()
+            }
         }
-        processBar.onClick= function(){
+        returnBtn.onclick = function () {
+            if (!this.classList.contains("btnActive")) {
+                this.classList.add("btnActive")
+                _this.isReturn = true;
+
+            } else {
+                this.classList.remove("btnActive");
+                _this.isReturn = false;
+            }
+        }
+
+        randomBtn.onclick = function () {
+            if (!this.classList.contains("btnActive")) {
+                this.classList.add("btnActive")
+                _this.isRandom = true;
+            } else {
+                this.classList.remove("btnActive");
+                _this.isRandom = false;
+            }
+        }
+        playList.onclick = function (e) {
+            const songNode = e.target.closest(".playlist--song:not(.active)");
+            if (songNode && !e.target.closest(".ellipsis--song")) {
+                // Xử lý khi click vào song
+                // Handle when clicking on the song
+                if (songNode) {
+                    _this.currentIndex = Number(songNode.dataset.index);
+                    _this.loadCurrentSong();
+                    _this.render();
+                    audio.play();
+                }
+            }
+            // Xử lý khi click vào song option
+            // Handle when clicking on the song option
+            if (e.target.closest(".ellipsis--song")) {
+                console.log("a")
+            }
+        }
+        processBar.onClick = function () {
             console.log("a")
         }
-        processBar.addEventListener("change", function(){
-            audio.currentTime=Math.floor(this.value/100*audio.duration);
+        processBar.addEventListener("change", function () {
+            audio.currentTime = Math.floor(this.value / 100 * audio.duration);
         })
-        processBar.addEventListener("input", function(){
-            audio.currentTime=Math.floor(this.value/100*audio.duration);
-            console.log(this.value)
+        processBar.addEventListener("input", function () {
+            audio.currentTime = Math.floor(this.value / 100 * audio.duration);
         })
+    },
+    randomMusic: function () {
+        this.currentIndex = Math.floor(Math.random() * this.songs.length)
+        this.loadCurrentSong();
+        audio.play()
     },
     nextSong: function () {
         this.currentIndex++;
-        if(this.currentIndex >= this.songs.length) {
+        if (this.currentIndex >= this.songs.length) {
             this.currentIndex = 0;
         }
         this.loadCurrentSong();
     },
     prevSong: function () {
         this.currentIndex--;
-        if(this.currentIndex < 0) {
-            this.currentIndex = this.songs.length-1;
+        if (this.currentIndex < 0) {
+            this.currentIndex = this.songs.length - 1;
         }
         this.loadCurrentSong();
     },
     defineProperties: function () {
         Object.defineProperty(this, "currentSong", {
-          get: function () {
-            return this.songs[this.currentIndex];
-          }
+            get: function () {
+                return this.songs[this.currentIndex];
+            }
         });
     },
     loadCurrentSong: function () {
@@ -172,12 +228,12 @@ const app={
         cd.style.backgroundImage = `url('${this.currentSong.image}')`;
         audio.src = this.currentSong.path;
     },
-    
-    render: function() {
-        
-        var listSongs=this.songs.map(function(song,index){
+
+    render: function () {
+
+        var listSongs = this.songs.map(function (song, index) {
             return `
-            <div class="playlist--song ${index===app.currentIndex ? "active":""}" data-index="${index}">
+            <div class="playlist--song ${index === app.currentIndex ? "active" : ""}" data-index="${index}">
                     <div class="title--song">
                         <div class="title--song__img" style="background-image:url('${song.image}');">
                         </div>
@@ -190,15 +246,15 @@ const app={
                             </div>
                         </div>
                     </div>
-                    <div class="ellipsis--song">
+                    <div class="ellipsis--song ">
                         <i class="fa-solid fa-ellipsis"></i>
                     </div>
                 </div>
         `
         })
-        playList.innerHTML = listSongs.join('')    
+        playList.innerHTML = listSongs.join('')
     },
-    start: function() {
+    start: function () {
         // hàm bắt sự kiên trong DOM
         this.handleEvent()
         this.defineProperties()
