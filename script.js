@@ -106,6 +106,7 @@ const app = {
             _this.isPlaying = true;
             musicApp.classList.add("playing");
             cdThumbAnimate.play();
+            _this.scrollToActiveSong()
         };
 
         // Khi song bị pause
@@ -146,7 +147,11 @@ const app = {
             } else {
                 if (_this.isRandom) {
                     _this.randomMusic();
-                } else _this.nextSong()
+                } else {
+                    _this.nextSong()
+                    _this.render()
+                    audio.play()
+                }
             }
         }
         returnBtn.onclick = function () {
@@ -171,7 +176,8 @@ const app = {
         }
         playList.onclick = function (e) {
             const songNode = e.target.closest(".playlist--song:not(.active)");
-            if (songNode && !e.target.closest(".ellipsis--song")) {
+            const ellipsis = e.target.closest(".ellipsis--song");
+            if (songNode && !ellipsis) {
                 // Xử lý khi click vào song
                 // Handle when clicking on the song
                 if (songNode) {
@@ -181,12 +187,18 @@ const app = {
                     audio.play();
                 }
             }
-            // Xử lý khi click vào song option
-            // Handle when clicking on the song option
-            if (e.target.closest(".ellipsis--song")) {
-                console.log("a")
+            if (ellipsis) {
+                var setting = ellipsis.querySelector(".setting");
+                if (!setting.classList.contains("setting--active")) {
+                    setting.classList.add("setting--active");
+                } else {
+                    setting.classList.remove("setting--active");
+
+
+                }
             }
         }
+
         processBar.onClick = function () {
             console.log("a")
         }
@@ -200,6 +212,7 @@ const app = {
     randomMusic: function () {
         this.currentIndex = Math.floor(Math.random() * this.songs.length)
         this.loadCurrentSong();
+        this.render();
         audio.play()
     },
     nextSong: function () {
@@ -215,6 +228,14 @@ const app = {
             this.currentIndex = this.songs.length - 1;
         }
         this.loadCurrentSong();
+    },
+    scrollToActiveSong: function () {
+        setTimeout(() => {
+            document.querySelector(".playlist--song.active").scrollIntoView({
+                behavior: "smooth",
+                block: "center"
+            });
+        }, 300);
     },
     defineProperties: function () {
         Object.defineProperty(this, "currentSong", {
@@ -246,9 +267,14 @@ const app = {
                             </div>
                         </div>
                     </div>
-                    <div class="ellipsis--song ">
+                    <div class="ellipsis--song setting--${index}">
+                        <div class="setting " data-index="${index}">
+                            <div class="modifier">Delete <i class="fa-solid fa-trash"></i></div>
+                        </div>
                         <i class="fa-solid fa-ellipsis"></i>
                     </div>
+                    
+            
                 </div>
         `
         })
