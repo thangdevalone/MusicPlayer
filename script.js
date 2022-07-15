@@ -10,7 +10,9 @@ const processBar = document.querySelector(".process")
 const musicApp = document.querySelector(".music--app")
 const returnBtn = document.querySelector(".return")
 const randomBtn = document.querySelector(".random")
-
+const stockMusic= document.querySelector(".stock-music")
+const inputSearch = document.querySelector(".search-input")
+const volume=document.querySelector(".process-volume")
 const app = {
     currentIndex: 0,
     isReturn: false,
@@ -77,21 +79,63 @@ const app = {
             path: "./assets/music/YeuRoiSeBiet-CuCak.mp3",
             image: "./assets/img/YeuRoiSeBiet.jpg"
         },
+       
+    ],
+    songsStock:[
         {
-            name: "Sau tất cả",
-            author: "Erik",
-            path: "./assets/music/SauTatCa-Erik.mp3",
-            image: "./assets/img/SauTatCa.jpg"
+            name: "Tình Đầu",
+            author: "Tăng Duy Tân",
+            path: "./assets/music/TinhDau-TangDuyTan.mp3",
+            image: "https://photo-resize-zmp3.zmdcdn.me/w240_r1x1_jpeg/cover/0/a/d/1/0ad18644161b1bbe41bc1ca0471600ba.jpg" 
+        },
+        {
+            name: "Tháng tư là lời nói dối của em",
+            author: "Hà Anh Tuấn",
+            path: "./assets/music/ThangTuLaLoiNoiDoiCuaEm-HaAnhTuan.mp3",
+            image: "https://thoidai.com.vn/stores/news_dataimages/anh.khuong/032019/31/11/2902_1476093493424_500.jpg" 
+        },
+        {
+            name: "Âm thầm bên em (Lofi)",
+            author: "Sơn Tùng MTP",
+            path: "./assets/music/AmThamBenEm(Lofi)-SonTungMTP.mp3",
+            image: "https://i1.sndcdn.com/artworks-TTCQb0HV7lksG9GF-FxNJRw-t500x500.jpg" 
+        },
+        {
+            name: "Nơi này có anh",
+            author: "Sơn Tùng MTP",
+            path: "./assets/music/NoiNayCoAnh-SonTungMTP.mp3",
+            image: "https://upload.wikimedia.org/wikipedia/vi/1/1d/N%C6%A1i_n%C3%A0y_c%C3%B3_anh_-_Single_Cover.jpg" 
+        },
+        {
+            name: "Lạ Lùng",
+            author: "Vũ",
+            path: "./assets/music/LaLung-Vu.mp3",
+            image: "https://avatar-ex-swe.nixcdn.com/song/2018/01/26/1/8/9/0/1516930244148_640.jpg" 
         }
+        
     ],
     handleEvent: function () {
-
         const _this = this;
         const cdThumbAnimate = cd.animate([{ transform: "rotate(360deg)" }], {
             duration: 10000, // 10 seconds
             iterations: Infinity
         });
         cdThumbAnimate.pause();
+        //
+        // lắng nghe search
+        inputSearch.addEventListener("input", function(e){
+            _this.songsStock.forEach((element,index)=>{
+                let valueSearch = e.target.value.trim().toUpperCase();
+                let valueName =element.name.toUpperCase();
+                if(!valueName.includes(valueSearch)){
+                    document.querySelector(`.song-stock-${index}`).classList.add("noneDisplay")
+                    console.log(e.target.value)
+                }
+                else 
+                document.querySelector(`.song-stock-${index}`).classList.remove("noneDisplay")
+
+            })
+        })
         playBtn.onclick = function () {
             if (_this.isPlaying) {
                 audio.pause();
@@ -106,7 +150,7 @@ const app = {
             _this.isPlaying = true;
             musicApp.classList.add("playing");
             cdThumbAnimate.play();
-            _this.scrollToActiveSong()
+            _this.scrollToActiveSong();
         };
 
         // Khi song bị pause
@@ -199,15 +243,23 @@ const app = {
             }
         }
 
-        processBar.onClick = function () {
-            console.log("a")
-        }
+        // thay đổi vt dài nhạc
         processBar.addEventListener("change", function () {
             audio.currentTime = Math.floor(this.value / 100 * audio.duration);
         })
         processBar.addEventListener("input", function () {
             audio.currentTime = Math.floor(this.value / 100 * audio.duration);
         })
+        //lắng nghe thay đổi âm lượng
+        volume.addEventListener("change", function () {
+            audio.volume= this.value / 100 ;
+        })
+        volume.addEventListener("input", function () {
+            audio.volume= this.value / 100 ;
+        })
+    },
+    currentVolume: function () {
+        volume.value=audio.volume*100
     },
     randomMusic: function () {
         this.currentIndex = Math.floor(Math.random() * this.songs.length)
@@ -249,9 +301,44 @@ const app = {
         cd.style.backgroundImage = `url('${this.currentSong.image}')`;
         audio.src = this.currentSong.path;
     },
-
+    delete:function () {
+        const btnDelete = document.querySelectorAll(".modifier")
+        btnDelete.forEach((x,index) => {
+            x.addEventListener("click",()=>{
+                this.songs.splice(index,1)
+                console.log(index)
+                this.loadCurrentSong()
+                this.render()
+                audio.play()
+                this.delete()
+            })
+        })
+    },
+    renderStock: function () {
+        var listSongsStock=this.songsStock.map(function(song,index){
+            return `
+            <div class="playlist--song song-stock-${index}"  data-index="${index}">
+                    <div class="title--song">
+                        <div class="title--song__img" style="background-image:url('${song.image}');">
+                        </div>
+                        <div class="title--song__infor">
+                            <div class="title--song__name">
+                                ${song.name}
+                            </div>
+                            <div class="title--song__author">
+                                ${song.author}
+                            </div>
+                        </div>
+                    </div>
+                  
+                    
+            
+                </div>
+        `
+        })
+        stockMusic.innerHTML=listSongsStock.join('')
+    },
     render: function () {
-
         var listSongs = this.songs.map(function (song, index) {
             return `
             <div class="playlist--song ${index === app.currentIndex ? "active" : ""}" data-index="${index}">
@@ -279,14 +366,21 @@ const app = {
         `
         })
         playList.innerHTML = listSongs.join('')
+        
     },
     start: function () {
+        
         // hàm bắt sự kiên trong DOM
         this.handleEvent()
         this.defineProperties()
         // Render ra bài nhạc
         this.loadCurrentSong()
         this.render()
+        this.renderStock()
+        //volume ban dau
+        this.currentVolume()
+        //delete
+        this.delete()
     }
 }
 app.start()
