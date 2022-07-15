@@ -310,7 +310,6 @@ const app = {
                 this.loadCurrentSong()
                 this.render()
                 audio.play()
-                this.delete()
             })
         })
     },
@@ -366,6 +365,7 @@ const app = {
         `
         })
         playList.innerHTML = listSongs.join('')
+        this.delete()
         
     },
     start: function () {
