@@ -7,6 +7,7 @@ body {
     font-family: 'Roboto', sans-serif;
     font-size: 16px;
     color: black;   
+    user-select: none;
 }
 /*---------------------- css app base------------- */
 .container {
@@ -137,7 +138,7 @@ body {
 .stock-music{
     margin-top:20px;
     overflow-y:scroll;
-    padding: 0 10px 10px 10px;
+    padding: 5px 10px 10px 10px;
     cursor: pointer;
 }
 .store{
@@ -178,7 +179,6 @@ body {
 }
 .controls{
     margin-top: 20px;
-    margin-bottom: 5px;
     display:flex;
     justify-content: space-around;
 }
@@ -203,7 +203,7 @@ body {
     font-size:25px;
 }
 .process--bar{
-    margin-bottom: 5px;
+    margin-bottom: 10px;
 
 }
 .process {
@@ -236,19 +236,22 @@ body {
     background: red;
     cursor: pointer;
 }
-
+.pink-background-class{
+    background-color: pink;
+}
 .playlist--song.active{
     background:red;
     border-radius:10px;
     color:white;
 }
+
   /* Handle on hover */
 .playlist::-webkit-scrollbar-thumb:hover {
     background: #555;
     border-radius: 10px;
   }
 .playlist{
-    height:250px;
+    height:260px;
     padding:10px;
     overflow-y: scroll;
     cursor: pointer;

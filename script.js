@@ -1,4 +1,4 @@
-const playList = document.querySelector(".playlist");
+var playList = document.querySelector(".playlist");
 const playBtn = document.querySelector(".play--ui");
 const playIco = document.querySelector(".play--ico")
 const cd = document.querySelector(".cd--thumb");
@@ -18,6 +18,7 @@ const app = {
     isReturn: false,
     isRandom: false,
     isPlaying: false,
+    isDOM: false,
     songs: [
         {
             name: "Anh đánh rơi người yêu này",
@@ -218,7 +219,14 @@ const app = {
                 _this.isRandom = false;
             }
         }
+        // playList.ondragend = function () {
+        //     _this.getDOM()
+        //     _this.render();
+
+
+        // }
         playList.onclick = function (e) {
+           
             const songNode = e.target.closest(".playlist--song:not(.active)");
             const ellipsis = e.target.closest(".ellipsis--song");
             if (songNode && !ellipsis) {
@@ -302,18 +310,54 @@ const app = {
         audio.src = this.currentSong.path;
     },
     delete:function () {
+        this.getDOM()
+        
         const btnDelete = document.querySelectorAll(".modifier")
         btnDelete.forEach((x,index) => {
             x.addEventListener("click",()=>{
+                playList = document.querySelector(".playlist");
                 this.songs.splice(index,1)
-                console.log(index)
-                this.loadCurrentSong()
+                console.log(this.currentIndex,index,btnDelete.length );
+                
+                
+                if(index<this.currentIndex){
+                    this.currentIndex=this.currentIndex-1;
+                }
+                if(index===btnDelete.length-1 && index===this.currentIndex){
+                    this.currentIndex=this.currentIndex-1;
+                    this.loadCurrentSong()
+
+                } else
+                if(index===this.currentIndex){
+                    this.loadCurrentSong()
+                }
                 this.render()
                 audio.play()
+            
             })
         })
     },
+    drag:function () {
+        new Sortable (playList,{
+            animation : 200 , 
+            ghostClass : 'pink-background-class' 
+        })
+    },
+    getDOM:function () {
+        var DOM=document.querySelectorAll(".songs-love");
+        var copySongs=[];
+        DOM.forEach((E,index1)=>{
+            this.songs.forEach((x,index2)=>{
+                if(x.name===E.innerText){
+                    copySongs.push(x);
+                }
+            })
+        })
+        this.songs=[...copySongs];
+       
+    },
     renderStock: function () {
+
         var listSongsStock=this.songsStock.map(function(song,index){
             return `
             <div class="playlist--song song-stock-${index}"  data-index="${index}">
@@ -329,7 +373,7 @@ const app = {
                             </div>
                         </div>
                     </div>
-                  
+                    <div class="lover"></div>
                     
             
                 </div>
@@ -337,7 +381,12 @@ const app = {
         })
         stockMusic.innerHTML=listSongsStock.join('')
     },
+
     render: function () {
+        if(this.isDOM){
+            this.getDOM()
+        }
+        else this.isDOM=true
         var listSongs = this.songs.map(function (song, index) {
             return `
             <div class="playlist--song ${index === app.currentIndex ? "active" : ""}" data-index="${index}">
@@ -345,10 +394,10 @@ const app = {
                         <div class="title--song__img" style="background-image:url('${song.image}');">
                         </div>
                         <div class="title--song__infor">
-                            <div class="title--song__name">
+                            <div class="title--song__name songs-love">
                                 ${song.name}
                             </div>
-                            <div class="title--song__author">
+                            <div class="title--song__author ">
                                 ${song.author}
                             </div>
                         </div>
@@ -367,6 +416,7 @@ const app = {
         playList.innerHTML = listSongs.join('')
         this.delete()
         
+        
     },
     start: function () {
         
@@ -379,8 +429,9 @@ const app = {
         this.renderStock()
         //volume ban dau
         this.currentVolume()
+        this.drag()
+
         //delete
-        this.delete()
     }
 }
 app.start()
