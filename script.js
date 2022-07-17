@@ -13,7 +13,7 @@ const randomBtn = document.querySelector(".random")
 const stockMusic= document.querySelector(".stock-music")
 const inputSearch = document.querySelector(".search-input")
 const volume=document.querySelector(".process-volume")
-const app = {
+var app = {
     currentIndex: 0,
     isReturn: false,
     isRandom: false,
@@ -116,6 +116,7 @@ const app = {
         
     ],
     handleEvent: function () {
+        
         const _this = this;
         const cdThumbAnimate = cd.animate([{ transform: "rotate(360deg)" }], {
             duration: 10000, // 10 seconds
@@ -130,7 +131,7 @@ const app = {
                 let valueName =element.name.toUpperCase();
                 if(!valueName.includes(valueSearch)){
                     document.querySelector(`.song-stock-${index}`).classList.add("noneDisplay")
-                    console.log(e.target.value)
+                   
                 }
                 else 
                 document.querySelector(`.song-stock-${index}`).classList.remove("noneDisplay")
@@ -163,6 +164,7 @@ const app = {
         };
 
         nextBtn.onclick = function () {
+            _this.getDOM()
             if (_this.isRandom) {
                 _this.randomMusic();
             } else _this.nextSong()
@@ -170,6 +172,8 @@ const app = {
             audio.play();
         }
         prevBtn.onclick = function () {
+            _this.getDOM()
+
             if (_this.isRandom) {
                 _this.randomMusic();
             } else _this.prevSong()
@@ -225,8 +229,17 @@ const app = {
 
 
         // }
+        stockMusic.onclick=function (e) {
+            const songNode = e.target.closest(".playlist--song:not(.love)");
+            if(songNode){
+                console.log(_this.songsStock[Number(songNode.dataset.index)])
+                _this.songs.push(_this.songsStock[Number(songNode.dataset.index)])
+                _this.isDOM=false
+                _this.render()
+                audio.play()
+            }
+        }
         playList.onclick = function (e) {
-           
             const songNode = e.target.closest(".playlist--song:not(.active)");
             const ellipsis = e.target.closest(".ellipsis--song");
             if (songNode && !ellipsis) {
@@ -270,12 +283,30 @@ const app = {
         volume.value=audio.volume*100
     },
     randomMusic: function () {
-        this.currentIndex = Math.floor(Math.random() * this.songs.length)
+        this.getDOM()
+
+        var indexRandom
+        do{
+
+            indexRandom=Math.floor(Math.random() * this.songs.length)
+           
+        } while(indexRandom===this.currentIndex)
+        this.currentIndex = indexRandom
         this.loadCurrentSong();
         this.render();
         audio.play()
     },
+    getCurrentIndex: function () {
+        var playListSong=document.querySelectorAll(".songLover")
+         
+        playListSong.forEach((x,index)=>{
+            if(x.classList.contains("active")){
+                this.currentIndex=index;
+                
+        }})
+    },
     nextSong: function () {
+        this.getCurrentIndex()
         this.currentIndex++;
         if (this.currentIndex >= this.songs.length) {
             this.currentIndex = 0;
@@ -283,6 +314,8 @@ const app = {
         this.loadCurrentSong();
     },
     prevSong: function () {
+        this.getCurrentIndex()
+
         this.currentIndex--;
         if (this.currentIndex < 0) {
             this.currentIndex = this.songs.length - 1;
@@ -317,7 +350,6 @@ const app = {
             x.addEventListener("click",()=>{
                 playList = document.querySelector(".playlist");
                 this.songs.splice(index,1)
-                console.log(this.currentIndex,index,btnDelete.length );
                 
                 
                 if(index<this.currentIndex){
@@ -343,29 +375,30 @@ const app = {
             ghostClass : 'pink-background-class' 
         })
     },
+   
     getDOM:function () {
-        var DOM=document.querySelectorAll(".songs-love");
+
+        var DOM=document.querySelectorAll(".songs-name");
         var copySongs=[];
         DOM.forEach((E,index1)=>{
             this.songs.forEach((x,index2)=>{
                 if(x.name===E.innerText){
-                    copySongs.push(x);
+                    copySongs=[...copySongs,x];
                 }
             })
         })
         this.songs=[...copySongs];
-       
+        
     },
     renderStock: function () {
 
         var listSongsStock=this.songsStock.map(function(song,index){
             return `
-            <div class="playlist--song song-stock-${index}"  data-index="${index}">
-                    <div class="title--song">
-                        <div class="title--song__img" style="background-image:url('${song.image}');">
-                        </div>
+            <div class="playlist--song songsStock song-stock-${index} love "  data-index="${index}">
+                <div class="title--song">
+                    <div class="title--song__img" style="background-image:url('${song.image}');"></div>
                         <div class="title--song__infor">
-                            <div class="title--song__name">
+                            <div class="title--song__name songs_name_stock">
                                 ${song.name}
                             </div>
                             <div class="title--song__author">
@@ -373,10 +406,9 @@ const app = {
                             </div>
                         </div>
                     </div>
-                    <div class="lover"></div>
-                    
+                <div class="heart"></div>
+            </div>
             
-                </div>
         `
         })
         stockMusic.innerHTML=listSongsStock.join('')
@@ -389,12 +421,12 @@ const app = {
         else this.isDOM=true
         var listSongs = this.songs.map(function (song, index) {
             return `
-            <div class="playlist--song ${index === app.currentIndex ? "active" : ""}" data-index="${index}">
+            <div class="playlist--song songLover ${index === app.currentIndex ? "active" : ""}" data-index="${index}">
                     <div class="title--song">
                         <div class="title--song__img" style="background-image:url('${song.image}');">
                         </div>
                         <div class="title--song__infor">
-                            <div class="title--song__name songs-love">
+                            <div class="title--song__name songs-name">
                                 ${song.name}
                             </div>
                             <div class="title--song__author ">
@@ -415,7 +447,6 @@ const app = {
         })
         playList.innerHTML = listSongs.join('')
         this.delete()
-        
         
     },
     start: function () {
