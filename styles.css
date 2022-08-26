@@ -367,6 +367,9 @@ body {
 .heart.heart-active {
   animation: animate 0.8s steps(28) 1 forwards;
 }
+.btn-voting{
+    position: absolute;
+}
 /* ------------------------------Keyframes---------------------------------- */
 @keyframes bottomGo{
     0%{
