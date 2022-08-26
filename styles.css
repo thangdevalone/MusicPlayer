@@ -96,7 +96,7 @@ body {
     top:200px;
 }
 .app{
-    height:600px;
+    height:85%;
     width: 400px;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     border-radius:15px;
@@ -140,11 +140,14 @@ body {
     overflow-y:scroll;
     padding: 5px 10px 10px 10px;
     cursor: pointer;
+    height: 71%;
 }
 .store{
     width: 600px !important;
 
 }
+
+
 .store__header{
     text-align:center;
 }
@@ -164,7 +167,7 @@ body {
     font-weight:bold;
 }
 .cd{
-    height:150px;
+    height:120px;
     display:flex;
     justify-content:center;
     align-items:center;
@@ -173,8 +176,8 @@ body {
     background-image:url("./assets/img/AnhDanhRoiNguoiYeuNay.png");
     background-position: center;
     background-size: cover;
-    width: 150px;
-    height:150px;
+    width: 120px;
+    height:120px;
     border-radius: 50%;
 }
 .controls{
@@ -183,14 +186,14 @@ body {
     justify-content: space-around;
 }
 .control{
-    font-size: 20px;
+    font-size: 18px;
     cursor: pointer;
 }
 .control.play--ui{
     background-color: red;
     color:white;
-    width: 50px;
-    height: 50px;
+    width: 45px;
+    height: 45px;
     display:flex;
     justify-content:center;
     align-items:center;
@@ -199,7 +202,7 @@ body {
     top:-10px;
 }
 .play--ui i{
-    margin-left:3px;
+    margin-left:2px;
     font-size:25px;
 }
 .process--bar{
@@ -251,7 +254,7 @@ body {
     border-radius: 10px;
   }
 .playlist{
-    height:260px;
+    height:46%;
     padding:10px;
     overflow-y: scroll;
     cursor: pointer;
@@ -291,10 +294,24 @@ body {
     font-weight: bold;
     margin-left: 10px;
 }
-.title--song__author{
+.title--song__author__stock{
     font-weight: normal;
     font-style: italic;
     font-size:14px;
+}
+.title--song__author{
+    display: block;
+    display: -webkit-box;
+    max-height: 18px;
+    max-width: 200px;
+    -webkit-line-clamp:1;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    font-weight: normal;
+    font-style: italic;
+    font-size:14px;
+
 }
 .ellipsis--song{
     margin-right: 10px;

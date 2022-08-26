@@ -18,63 +18,73 @@ var app = {
     isReturn: false,
     isRandom: false,
     isPlaying: false,
-    isDOM: false,
+    isDOM: false,// xem true thì lấy DOM false thì không
     songs: [
         {
+            id: 100,
             name: "Anh đánh rơi người yêu này",
             author: "AMEE & Andiliez",
             path: "./assets/music/AnhDanhRoiNguoiYeuNay-Amee_Andiez.mp3",
             image: "./assets/img/AnhDanhRoiNguoiYeuNay.png"
         },
         {
+            id: 101,
             name: "Có chắc yêu là đây",
             author: "Sơn Tùng MTP",
             path: "./assets/music/CoChacYeuLaDay-MTP.mp3",
             image: "./assets/img/CoChacYeuLaDay.jpg"
         },
         {
+            id: 102,
             name: "Cứ thở đi",
             author: "Đức Phúc & JukySan",
             path: "./assets/music/CuThoDi-DucPhuc_JukySan.mp3",
             image: "./assets/img/CuThoDi.jpg"
         },
         {
+            id: 103,
             name: "Floating With You",
             author: "Venxento",
             path: "./assets/music/FloatingWithYou-Venxento.mp3",
             image: "./assets/img/FloatingWithYou.jpg"
         },
         {
+            id: 104,
             name: "Lung Lay",
             author: "Cucak",
             path: "./assets/music/LungLay-CuCak.mp3",
             image: "./assets/img/LungLay.jpg"
         },
         {
+            id: 105,
             name: "Mê",
             author: "Hoàng Duyên",
             path: "./assets/music/Me-HoangDuyen.mp3",
             image: "./assets/img/Me.jpg"
         },
         {
+            id: 106,
             name: "Never Letting Go",
             author: "Venxento",
             path: "./assets/music/NeverLettingGo-Venxento.mp3",
             image: "./assets/img/NeverLettingGo.jpg"
         },
         {
+            id: 107,
             name: "Northern Lights",
             author: "Venxento",
             path: "./assets/music/NorthernLights-Venxento.mp3",
             image: "./assets/img/Venxento.jpg"
         },
         {
+            id: 108,
             name: "Ngày Đầu Tiên",
             author: "Đức Phúc",
             path: "./assets/music/NgayDauTien-DucPhuc.mp3",
             image: "./assets/img/NgayDauTien.jpg"
         },
         {
+            id: 109,
             name: "Yêu rồi sẽ biết",
             author: "Cucak",
             path: "./assets/music/YeuRoiSeBiet-CuCak.mp3",
@@ -84,36 +94,61 @@ var app = {
     ],
     songsStock:[
         {
+            id: 110,
             name: "Tình Đầu",
             author: "Tăng Duy Tân",
             path: "./assets/music/TinhDau-TangDuyTan.mp3",
             image: "https://photo-resize-zmp3.zmdcdn.me/w240_r1x1_jpeg/cover/0/a/d/1/0ad18644161b1bbe41bc1ca0471600ba.jpg" 
         },
         {
+            id: 111,
             name: "Tháng tư là lời nói dối của em",
             author: "Hà Anh Tuấn",
             path: "./assets/music/ThangTuLaLoiNoiDoiCuaEm-HaAnhTuan.mp3",
             image: "https://thoidai.com.vn/stores/news_dataimages/anh.khuong/032019/31/11/2902_1476093493424_500.jpg" 
         },
         {
+            id: 112,
             name: "Âm thầm bên em (Lofi)",
             author: "Sơn Tùng MTP",
             path: "./assets/music/AmThamBenEm(Lofi)-SonTungMTP.mp3",
             image: "https://i1.sndcdn.com/artworks-TTCQb0HV7lksG9GF-FxNJRw-t500x500.jpg" 
         },
         {
+            id: 113,
             name: "Nơi này có anh",
             author: "Sơn Tùng MTP",
             path: "./assets/music/NoiNayCoAnh-SonTungMTP.mp3",
             image: "https://upload.wikimedia.org/wikipedia/vi/1/1d/N%C6%A1i_n%C3%A0y_c%C3%B3_anh_-_Single_Cover.jpg" 
         },
         {
+            id: 114,
             name: "Lạ Lùng",
             author: "Vũ",
             path: "./assets/music/LaLung-Vu.mp3",
             image: "https://avatar-ex-swe.nixcdn.com/song/2018/01/26/1/8/9/0/1516930244148_640.jpg" 
+        },
+        {
+            id: 115,
+            name: "Querry",
+            author: "QNT x TRUNG TRẦN ft RPT MCK (Prod. By RASTZ)",
+            path: "./assets/music/QUERRY-QNT x TRUNG TRẦN ft RPT MCK Prod By RASTZ.mp3",
+            image: "./assets/img/Querry.jpg" 
+        },
+        {
+            id: 116,
+            name: "Mặt Mộc",
+            author: "Pham Nguyên Ngoc x VAnh x Ân Nhi",
+            path: "./assets/music/MĂT MÔC-Pham Nguyên Ngoc x VAnh x Ân Nhi.mp3",
+            image: "./assets/img/matmoc.jpg" 
+        },
+        {
+            id: 117,
+            name: "Ngày Em Đi",
+            author: "Touliver X Lê Hiếu X Soobin Hoàng Sơn",
+            path: "./assets/music/NGÀY MAI EM ĐI 2017 TOULIVER X LÊ HIẾU X SOOBIN HOÀNG SƠN.mp3",
+            image: "./assets/img/NgayMaiEmDi.jpg" 
         }
-        
     ],
     handleEvent: function () {
         
@@ -232,13 +267,27 @@ var app = {
         stockMusic.onclick=function (e) {
             const songNode = e.target.closest(".playlist--song:not(.love)");
             if(songNode){
-                console.log(_this.songsStock[Number(songNode.dataset.index)])
                 _this.songs.push(_this.songsStock[Number(songNode.dataset.index)])
                 _this.isDOM=false
                 _this.render()
-                audio.play()
+                
+            }
+            else {
+                const dataIndex=e.target.closest(".playlist--song").dataset.index ;
+                console.log(dataIndex)
+                console.log(_this.songs.indexOf(_this.songsStock[Number(dataIndex)]))
+                if (dataIndex){
+                    _this.songs.splice(_this.songs.indexOf(_this.songsStock[Number(dataIndex)]))
+                    _this.render();
+                    if (this.isPlaying){
+                        audio.play()
+                    }
+                }
+                
+                
             }
         }
+
         playList.onclick = function (e) {
             const songNode = e.target.closest(".playlist--song:not(.active)");
             const ellipsis = e.target.closest(".ellipsis--song");
@@ -344,14 +393,19 @@ var app = {
     },
     delete:function () {
         this.getDOM()
-        
+        const _this = this;
         const btnDelete = document.querySelectorAll(".modifier")
         btnDelete.forEach((x,index) => {
             x.addEventListener("click",()=>{
+                const indexRemoveLove=_this.songsStock.indexOf(this.songs[index])
+                const songInStockRemoveLove=document.querySelector(`.song-stock-${indexRemoveLove}`)
+                const heart=document.querySelectorAll(".heart")
+                songInStockRemoveLove.classList.toggle("love")
+                heart[indexRemoveLove].classList.toggle("heart-active")
+
                 playList = document.querySelector(".playlist");
                 this.songs.splice(index,1)
-                
-                
+
                 if(index<this.currentIndex){
                     this.currentIndex=this.currentIndex-1;
                 }
@@ -364,7 +418,9 @@ var app = {
                     this.loadCurrentSong()
                 }
                 this.render()
-                audio.play()
+                if (this.isPlaying){
+                    audio.play()
+                }
             
             })
         })
@@ -401,7 +457,7 @@ var app = {
                             <div class="title--song__name songs_name_stock">
                                 ${song.name}
                             </div>
-                            <div class="title--song__author">
+                            <div class="title--song__author__stock">
                                 ${song.author}
                             </div>
                         </div>
