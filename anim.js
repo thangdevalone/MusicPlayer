@@ -26,3 +26,4 @@ songsStock.forEach((x,i)=>{
         clickEffect.play()
     })
 })
+

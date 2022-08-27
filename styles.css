@@ -370,7 +370,16 @@ body {
 .btn-voting{
     position: absolute;
 }
+.btn-pointer{
+    pointer-events: none;
+
+}
+.activeStar{
+    color: yellow;
+}
+
 /* ------------------------------Keyframes---------------------------------- */
+
 @keyframes bottomGo{
     0%{
         transform:translateY(500px);

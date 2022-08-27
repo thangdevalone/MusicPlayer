@@ -14,8 +14,24 @@
 </head>
 <body>
     <div class="container">
-        <div class="btn-voting">
-            <button>vote</button><p class="point"></p>
+        <div class="btn-voting" style="height: 100%;">
+            <div class="voting"  
+            style=  "
+                        color:#183153;
+                        cursor:pointer;
+                        width:100px;
+                        position:absolute; 
+                        bottom:10px;
+                        left:10px;
+                        opacity:0.6;
+                    ">
+            <div class="star" style="display:inline-block;">
+                <i class="fa-solid fa-star" style="font-size:25px;"></i>
+            </div>
+               
+            <span class="voting--notice" style="font-size: 14px;"><span class="num--people__rated"></span> People Gifted Star</span> 
+            </div>
+            
         </div>
         <div class="volume-feature">
             <div class="volume-bar">
@@ -82,11 +98,14 @@
     </div>
     <div class="cre">
         FROM THANG WITH LOVE <3 <br>
-        Version 1.1
+        Version 1.2(test)
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha512-z4OUqw38qNLpn1libAN9BsoDx6nbNFio5lA6CuTp9NlK83b89hgyCVq+N5FdBJptINztxn1Z3SaKSKUS5UP60Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js" integrity="sha512-Eezs+g9Lq4TCCq0wae01s9PuNWzHYoCMkE97e2qdkYthpI0pzC3UGB03lgEHn2XM85hDOUF6qgqqszs+iXU4UA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="./script.js"></script>
     <script src="./anim.js"></script>
     <script src="./voting.js"></script>
+
+
 </body>
 </html>
