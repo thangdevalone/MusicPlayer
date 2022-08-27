@@ -25,7 +25,7 @@ function loader(data) {
 }
 function updateVoting(){
     fetch(api+'/1', {
-        method: 'PATCH',
+        method: 'PUT',
         body: JSON.stringify({
         voting: dataStar,
     }),
@@ -34,7 +34,7 @@ function updateVoting(){
     },
 })
   .then((response) => response.json())
-  .then((json) => console.log(json));
+  .then((json) => getVoting());
 }
 const giftStarEffect=new Audio("./assets/Effect/GiftStar.ogg")
 
