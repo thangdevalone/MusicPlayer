@@ -1,4 +1,4 @@
-const api="https://6308f3a0722029d9dddc15b7.mockapi.io/api/v1/voting"
+const api="https://647cb70fc0bae2880ad11984.mockapi.io/api/v1/Voting"
 const voting=document.querySelector(".voting")
 const votingi= document.querySelector(".voting i")
 const votingSpan=document.querySelector(".voting span")
